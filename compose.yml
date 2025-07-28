@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    pull_policy: missing
+    shm_size: 128mb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_svelte_data:/var/lib/postgresql/data
+    networks:
+      - svelte-network
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: svelte
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --username=user --dbname=svelte"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.4-alpine
+    pull_policy: missing
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_svelte_data:/data
+    networks:
+      - svelte-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_svelte_data:
+  redis_svelte_data:
+
+networks:
+  svelte-network:
+    driver: bridge
