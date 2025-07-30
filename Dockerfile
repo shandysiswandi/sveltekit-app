@@ -15,6 +15,10 @@ RUN npm install
 FROM deps AS build
 WORKDIR /app
 COPY . .
+
+# This prevents the build from failing when it tries to initialize the db client.
+# This variable is ONLY used during this build stage and will not be in the final image.
+ENV DATABASE_URL="postgresql://dummy:dummy@dummy:5432/dummy"
 RUN npm run build
 
 # ---- Production Stage ----

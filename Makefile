@@ -26,11 +26,15 @@ format:
 # ==============================================================================
 #  Production Tasks
 # ==============================================================================
-.PHONY: start
+.PHONY: start build
+
+build:
+	@echo "🚀 Starting build production app..."
+	@npm run build
 
 start:
 	@echo "🚀 Starting production server..."
-	@npm run start
+	@PORT=${PORT} DATABASE_URL=${DATABASE_URL} ORIGIN=${ORIGIN} node build
 
 
 # ==============================================================================
