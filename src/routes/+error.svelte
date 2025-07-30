@@ -1,42 +1,46 @@
 <script lang="ts">
-  import { ArrowLeft } from "@lucide/svelte";
+  import { AlertTriangle, ArrowLeft, Compass } from "@lucide/svelte";
   import { Button } from "$lib/components/ui/button";
-
-  // export let error: App.Error;
+  import { page } from "$app/state";
 </script>
 
 <svelte:head>
   <title>Something went wrong | BigBoss Inc</title>
 </svelte:head>
 
-<div class="flex min-h-screen flex-col items-center justify-center bg-background">
-  <div
-    class="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
-  ></div>
-
-  <main class="container mx-auto flex flex-1 flex-col items-center justify-center p-4 text-center">
-    <div class="max-w-3xl">
-      <h1
-        class="bg-gradient-to-r from-primary via-blue-500 to-teal-500 bg-clip-text text-5xl font-bold tracking-tighter text-transparent md:text-7xl"
-      >
-        500
-      </h1>
-
-      <p class="mx-auto mt-6 max-w-xl text-lg text-muted-foreground md:text-xl">error guys</p>
-
-      <div class="mt-8 flex justify-center">
-        <Button href="/" size="lg" class="gap-2">
-          <ArrowLeft class="size-4" />
-          <span>Go to Home</span>
-        </Button>
+<div class="flex min-h-screen flex-col items-center justify-center bg-background text-foreground">
+  <main class="flex w-full max-w-lg flex-col items-center space-y-6 px-6 text-center">
+    {#if page.status === 404}
+      <Compass class="size-16 text-muted-foreground" stroke-width="1.5" />
+      <div class="space-y-2">
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Page Not Found</h1>
+        <p class="text-lg text-muted-foreground">
+          Sorry, we couldn't find the page you're looking for.
+        </p>
       </div>
-    </div>
-  </main>
+    {:else}
+      <AlertTriangle class="size-16 text-destructive" stroke-width="1.5" />
+      <div class="space-y-2">
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Internal Server Error</h1>
+        <p class="text-lg text-muted-foreground">
+          Something went wrong on our end. We've been notified and are looking into it.
+        </p>
+      </div>
+    {/if}
 
-  <footer class="py-8 text-sm text-muted-foreground">
-    <p>
-      &copy; {new Date().getFullYear()}
-      BigBoss Inc. All Rights Reserved.
-    </p>
-  </footer>
+    <div class="w-full rounded-lg border bg-muted p-4 text-left">
+      <p class="font-mono text-lg font-semibold">Status: {page.status}</p>
+      {#if page.error?.message}
+        <p class="mt-2 font-mono text-sm text-muted-foreground">
+          <span class="font-semibold">Message:</span>
+          {page.error?.message}
+        </p>
+      {/if}
+    </div>
+
+    <Button href="/" size="lg" class="gap-2">
+      <ArrowLeft class="size-4" />
+      <span>Go Back Home</span>
+    </Button>
+  </main>
 </div>
