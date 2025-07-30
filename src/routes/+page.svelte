@@ -1,11 +1,14 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button";
-  import ArrowRightIcon from "@lucide/svelte/icons/arrow-right";
+  import { ArrowRight } from "@lucide/svelte";
+  import { SplashCursor } from "$lib/components/splash-cursor";
 </script>
 
 <svelte:head>
   <title>Home</title>
 </svelte:head>
+
+<SplashCursor />
 
 <div class="flex min-h-screen flex-col items-center justify-center bg-background">
   <div
@@ -28,7 +31,7 @@
       <div class="mt-8 flex justify-center">
         <Button href="/login" size="lg" class="gap-2">
           <span>Get Started</span>
-          <ArrowRightIcon class="size-4" />
+          <ArrowRight class="size-4" />
         </Button>
       </div>
     </div>
